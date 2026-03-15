@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Intelligence | MediTrust Sentinel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #0f172a; /* Dark Blue */
+            --accent: #c5a36d;  /* Sandal Gold */
+            --accent-soft: rgba(197, 163, 109, 0.15);
+            --bg-beige: #fdfbf7; 
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --danger: #e11d48;
+            --success: #16a34a;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-beige);
+            color: var(--text-main);
+            display: flex; min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 40px 24px;
+            display: flex; flex-direction: column;
+            position: sticky; top: 0; height: 100vh;
+            z-index: 100;
+        }
+        aside h1 { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-bottom: 50px; letter-spacing: -1px; }
+        aside h1 strong { color: var(--accent); }
+        .nav-link {
+            padding: 14px 18px; color: var(--text-muted); text-decoration: none;
+            border-radius: 12px; margin-bottom: 8px; font-weight: 600;
+            display: flex; align-items: center; transition: 0.3s;
+        }
+        .nav-link:hover, .nav-link.active { background: var(--accent-soft); color: var(--accent); }
+        .nav-link.active { background: var(--primary); color: var(--white); }
+
+        main { flex: 1; padding: 40px 60px; animation: fadeIn 1s ease-out; }
+
+        /* Massive Hero Section */
+        .analytics-hero {
+            position: relative;
+            background: var(--primary);
+            border-radius: 40px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            padding: 0 80px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+        }
+
+        .analytics-hero img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+            mask-image: linear-gradient(to left, black 70%, transparent 100%);
+            animation: panImage 20s infinite alternate;
+        }
+
+        .hero-content { position: relative; z-index: 2; max-width: 650px; }
+        .hero-content h2 { font-size: 3.2rem; font-weight: 800; color: var(--white); margin: 0 0 25px; line-height: 1; }
+        .hero-content p {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 20px 20px 0;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* KPI Strip properly aligned */
+        .kpi-strip {
+            background: var(--white);
+            padding: 30px 50px;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(197, 163, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .kpi-group { display: flex; gap: 60px; }
+        .kpi-item label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); display: block; margin-bottom: 8px; }
+        .kpi-item .value { font-size: 2.4rem; font-weight: 900; color: var(--primary); line-height: 1; }
+
+        /* Graph Matrix */
+        .visual-matrix {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 35px;
+            padding: 45px;
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .chart-card h3 { 
+            font-size: 1.2rem; font-weight: 800; margin: 0 0 35px 0; display: flex; align-items: center; gap: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .chart-card h3::before { content: ''; width: 5px; height: 25px; background: var(--accent); border-radius: 10px; }
+
+        /* Animated Bar Graph */
+        .bar-container { display: flex; align-items: flex-end; justify-content: space-between; height: 300px; }
+        .bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 20px; }
+        .bar-pillar {
+            width: 50%; background: var(--bg-beige); border-radius: 12px 12px 4px 4px;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1.5px solid transparent;
+        }
+        .bar-pillar.active { background: var(--primary); border-color: var(--accent); box-shadow: 0 15px 25px rgba(15, 23, 42, 0.1); }
+        .bar-label { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); font-family: 'Fira Code'; }
+
+        /* Radial Score Plot */
+        .radial-container { height: 300px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .radial-svg { width: 220px; height: 220px; transform: rotate(-90deg); }
+        .radial-bg { fill: none; stroke: var(--bg-beige); stroke-width: 18; }
+        .radial-fill { 
+            fill: none; stroke: var(--primary); stroke-width: 18; stroke-linecap: round;
+            stroke-dasharray: 440; stroke-dashoffset: {{ 440 - (440 * rate / 100) }};
+            transition: stroke-dashoffset 2s ease-in-out;
+        }
+        .radial-text { position: absolute; text-align: center; }
+        .radial-text .percent { font-size: 3.8rem; font-weight: 900; color: var(--primary); line-height: 1; }
+        .radial-text .label { font-size: 0.8rem; font-weight: 800; color: var(--success); letter-spacing: 3px; margin-top: 10px; }
+
+        /* Recommendation Section */
+        .threat-feed { height: 350px; overflow-y: auto; padding-right: 15px; }
+        .recommendation-item {
+            padding: 20px; background: var(--bg-beige); border-radius: 20px;
+            border-left: 5px solid var(--accent); margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .recommendation-item:hover { transform: translateX(5px); background: var(--white); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .recommendation-item strong { display: block; font-size: 1rem; color: var(--primary); margin-bottom: 5px; }
+        .recommendation-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+        @keyframes panImage { from { transform: scale(1.05); } to { transform: scale(1.15); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<aside>
+    <h1>Medi<strong>Trust</strong></h1>
+    <nav>
+        <a href="/seller/dashboard" class="nav-link">Dashboard</a>
+        <a href="/seller/logs" class="nav-link">Chain Logs</a>
+        <a href="/seller/analytics" class="nav-link active">Security Intelligence</a>
+    </nav>
+    <div style="margin-top: auto;">
+        <a href="/logout" class="nav-link" style="color: var(--danger); background: #fff1f2;">Deauthorize Node</a>
+    </div>
+</aside>
+
+<main>
+    <section class="analytics-hero animate__animated animate__fadeIn">
+        <div class="hero-content">
+            <p style="color: var(--accent); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; font-size: 0.85rem;">Sentinel Operations Hub</p>
+            <h2>Security <br><span style="color: var(--accent)">Intelligence Matrix</span></h2>
+            <p>
+                Proprietary AI morphology analysis coupled with decentralized ledger auditing. Our system ensures molecular-level verification of every batch before it enters the global supply chain.
+            </p>
+        </div>
+        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Neural Security Network">
+    </section>
+
+    <section class="kpi-strip animate__animated animate__fadeInUp">
+        <div class="kpi-group">
+            <div class="kpi-item">
+                <label>Authenticity Rate</label>
+                <div class="value">{{ rate }}%</div>
+            </div>
+            <div class="kpi-item">
+                <label>Unit Volume</label>
+                <div class="value">{{ total }}</div>
+            </div>
+            <div class="kpi-item">
+                <label>Detected Anomalies</label>
+                <div class="value" style="color: var(--danger)">{{ fakes }}</div>
+            </div>
+        </div>
+        <div style="background: var(--bg-beige); padding: 12px 25px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; color: var(--primary);">
+            <span style="color: var(--success);">●</span> Node Health: Optimal
+        </div>
+    </section>
+
+    <div class="visual-matrix">
+        <div class="chart-card animate__animated animate__fadeInLeft">
+            <h3>Batch Verification Index</h3>
+            <div class="bar-container">
+                <div class="bar-wrapper">
+                    <div class="bar-pillar active" style="height: 85%"></div>
+                    <span class="bar-label">BCH-01</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-pillar" style="height: 40%"></div>
+                    <span class="bar-label">BCH-02</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-pillar active" style="height: 95%"></div>
+                    <span class="bar-label">BCH-03</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-pillar active" style="height: 70%"></div>
+                    <span class="bar-label">BCH-04</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-pillar" style="height: 60%"></div>
+                    <span class="bar-label">BCH-05</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-pillar active" style="height: 90%"></div>
+                    <span class="bar-label">BCH-06</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card animate__animated animate__fadeInRight">
+            <h3>Neural Scan Integrity</h3>
+            <div class="radial-container">
+                <svg class="radial-svg" viewBox="0 0 160 160">
+                    <circle class="radial-bg" cx="80" cy="80" r="70" />
+                    <circle class="radial-fill" cx="80" cy="80" r="70" />
+                </svg>
+                <div class="radial-text">
+                    <div class="percent">{{ rate|int }}%</div>
+                    <div class="label">NOMINAL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="visual-matrix" style="grid-template-columns: 1.2fr 1.8fr;">
+        <div class="chart-card animate__animated animate__fadeInUp">
+            <h3>AI Directives</h3>
+            <div class="threat-feed">
+                {% for rec in recs %}
+                <div class="recommendation-item">
+                    <strong>{{ rec.title }}</strong>
+                    <p>{{ rec.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="chart-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+            <h3>Enforcement & Recovery Recommendations</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: #fff1f2; padding: 25px; border-radius: 25px; border: 1px solid rgba(225, 29, 72, 0.1);">
+                    <div style="color: var(--danger); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px;">Immediate Action</div>
+                    <strong style="display: block; font-size: 1rem; margin-bottom: 10px;">Quarantine Batch Records</strong>
+                    <p style="font-size: 0.8rem; color: #991b1b; line-height: 1.4; margin: 0;">Automated triggers have detected physical anomalies in recent uploads. Lock the affected IDs to prevent blockchain finalization.</p>
+                </div>
+                <div style="background: #f0fdf4; padding: 25px; border-radius: 25px; border: 1px solid rgba(22, 163, 74, 0.1);">
+                    <div style="color: var(--success); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px;">System Health</div>
+                    <strong style="display: block; font-size: 1rem; margin-bottom: 10px;">Molecular Hash Sync</strong>
+                    <p style="font-size: 0.8rem; color: #15803d; line-height: 1.4; margin: 0;">Neural engine is currently matching at {{ rate }}% confidence. Ensure high-resolution imagery for future deployments.</p>
+                </div>
+                <div style="background: #fffbeb; padding: 25px; border-radius: 25px; border: 1px solid rgba(217, 119, 6, 0.1); grid-column: span 2;">
+                    <div style="color: #d97706; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px;">Strategic Recovery</div>
+                    <strong style="display: block; font-size: 1rem; margin-bottom: 10px;">Chain Integrity Counterfactuals</strong>
+                    <p style="font-size: 0.8rem; color: #92400e; line-height: 1.4; margin: 0;">The system integrity would improve to 100% if flagged items #{{ fakes }} were re-audited using infrared spectrum analysis. Consider upgrading hardware nodes to support multi-spectral scanning.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

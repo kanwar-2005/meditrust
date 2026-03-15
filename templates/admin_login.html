@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | MediTrust</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #0f172a; --accent: #c5a36d; --text-main: #1e293b; --text-muted: #475569; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; }
+    .split-screen { display: flex; height: 100vh; }
+    .left-pane { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; background: white; }
+    .form-container { width: 100%; max-width: 400px; animation: fadeIn 0.8s ease-out; }
+    .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; display: block; margin-bottom: 40px; }
+    .logo strong { color: var(--accent); }
+    h2 { font-size: 2rem; font-weight: 800; color: var(--primary); margin: 0; }
+    .subtitle { color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+    input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; box-sizing: border-box; }
+    .btn-auth { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-auth:hover { background: #000; transform: translateY(-2px); }
+    .right-pane { flex: 1; position: relative; background: var(--primary); overflow: hidden; display: flex; align-items: flex-end; }
+    .bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+    .overlay-content { position: relative; z-index: 2; padding: 60px; background: linear-gradient(to top, rgba(15,23,42,0.9), transparent); color: white; width: 100%; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="split-screen">
+  <div class="left-pane">
+    <div class="form-container">
+      <a href="/" class="logo">Medi<strong>Trust</strong></a>
+      <h2>Admin Control</h2>
+      <p class="subtitle">Secure authorization for protocol officers.</p>
+      <form action="/admin/login" method="POST">
+        <div class="form-group"><label>Username</label><input type="text" name="username" required></div>
+        <div class="form-group"><label>Security Password</label><input type="password" name="password" required></div>
+        <button type="submit" class="btn-auth">Authorize Access</button>
+      </form>
+    </div>
+  </div>
+  <div class="right-pane">
+    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000" class="bg-img">
+    <div class="overlay-content">
+      <h3>Network Governance</h3>
+      <p>Monitor seller credentials, flag suspicious activities, and maintain the pharmaceutical safety standards of the network.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

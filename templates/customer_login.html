@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Portal | MediGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-blue: #f0f7ff;
+      --sandal-600: #a67c52;
+      --sandal-500: #c29d7c;
+      --slate-900: #0f172a;
+      --slate-400: #94a3b8;
+      --white: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-blue);
+      background-image: radial-gradient(circle at 0% 0%, #e0f0ff 0%, transparent 50%),
+                        radial-gradient(circle at 100% 100%, #fdfaf7 0%, transparent 50%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--slate-900);
+    }
+
+    .auth-card {
+      background: var(--white);
+      width: 100%;
+      max-width: 420px;
+      padding: 50px;
+      border-radius: 32px;
+      box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--white);
+      text-align: center;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .brand-logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--sandal-600);
+      margin-bottom: 30px;
+      display: block;
+      text-decoration: none;
+    }
+
+    h2 { font-size: 1.75rem; margin-bottom: 8px; font-weight: 700; }
+    p { color: var(--slate-400); font-size: 0.95rem; margin-bottom: 32px; }
+
+    .form-group { text-align: left; margin-bottom: 20px; }
+    
+    label { 
+      display: block; 
+      font-size: 0.8rem; 
+      font-weight: 600; 
+      margin-bottom: 8px; 
+      color: var(--slate-600);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--sandal-500);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(194, 157, 124, 0.1);
+    }
+
+    .btn-auth {
+      width: 100%;
+      padding: 16px;
+      background: var(--sandal-600);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn-auth:hover {
+      background: var(--sandal-500);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(166, 124, 82, 0.3);
+    }
+
+    .switch-mode {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: var(--slate-400);
+    }
+
+    .switch-mode a {
+      color: var(--sandal-600);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <a href="/" class="brand-logo">🛡️ MediGuard</a>
+    
+    <h2>Welcome Back</h2>
+    <p>Please enter your credentials to access your node.</p>
+
+    <form action="/customer/login" method="POST">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="name@company.com" required>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn-auth">Sign In</button>
+    </form>
+
+    <div class="switch-mode">
+      Don't have an account? <a href="/customer/register">Create one</a>
+    </div>
+  </div>
+
+</body>
+</html>

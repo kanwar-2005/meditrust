@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Audit Ledger | MediTrust</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #0f172a; /* Dark Blue */
+            --accent: #c5a36d;  /* Sandal/Beige Gold */
+            --accent-soft: rgba(197, 163, 109, 0.15);
+            --bg-beige: #fdfbf7; 
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #16a34a;
+            --danger: #e11d48;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-beige);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Integrated Sidebar from Dashboard */
+        aside {
+            width: 280px;
+            background: white;
+            border-right: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        aside h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 50px;
+            letter-spacing: -1px;
+        }
+
+        aside h1 strong { color: var(--accent); }
+
+        .nav-link {
+            padding: 14px 18px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Content Layout Adjustment */
+        main {
+            flex: 1;
+            padding: 40px 60px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Hero Banner with Safe Spacing for KPI cards */
+        .hero-banner {
+            position: relative;
+            background: var(--primary);
+            border-radius: 40px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            overflow: hidden;
+            margin-bottom: 60px; /* Reduced to ensure para visibility */
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+        }
+
+        .hero-banner img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            mask-image: linear-gradient(to left, black 70%, transparent 100%);
+            animation: panImage 20s infinite alternate;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--white);
+            margin: 0 0 20px;
+            letter-spacing: -1.5px;
+            line-height: 1;
+        }
+
+        .hero-content p {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 20px 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* KPI Alignment Grid */
+        .analytics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(197, 163, 109, 0.2);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover { transform: translateY(-10px); }
+
+        .stat-card label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-pulse {
+            width: 12px;
+            height: 12px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Data Table */
+        .glass-table-card {
+            background: var(--white);
+            border-radius: 40px;
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.03);
+        }
+
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ledger-table th {
+            padding: 25px 30px;
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: left;
+        }
+
+        .log-row td {
+            padding: 25px 30px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .tx-hash {
+            font-family: 'Fira Code', monospace;
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .badge-sealed { background: #f0fdf4; color: var(--success); border: 1px solid rgba(22, 163, 74, 0.2); }
+        .badge-compromised { background: #fff1f2; color: var(--danger); border: 1px solid rgba(225, 29, 72, 0.2); }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(22, 163, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+        }
+
+        @keyframes panImage { from { transform: scale(1.0); } to { transform: scale(1.1); } }
+    </style>
+</head>
+<body>
+
+<aside>
+  <h1>Medi<strong>Trust</strong></h1>
+  <nav>
+    <a href="/seller/dashboard" class="nav-link">Dashboard</a>
+    <a href="/seller/logs" class="nav-link active">Chain Logs</a>
+    <a href="/seller/analytics" class="nav-link">Supply Analytics</a>
+  </nav>
+  <div style="margin-top: auto;">
+    <a href="/logout" class="nav-link" style="color: #e11d48; background: #fff1f2;">Sign Out System</a>
+  </div>
+</aside>
+
+<main>
+    <section class="hero-banner animate__animated animate__fadeIn">
+        <div class="hero-content">
+            <p style="color: var(--accent); font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; font-size: 0.8rem;">Decentralized Node Audit</p>
+            <h1>Global Chain <br><span style="color: var(--accent)">Verification Ledger</span></h1>
+            <p>
+                Every transaction within the MediTrust ecosystem is cryptographically signed and stored on an immutable ledger. This maintains a transparent, real-time history of drug movement.
+            </p>
+        </div>
+        <img src="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg" alt="Blockchain Tech">
+    </section>
+
+    <div class="analytics-row">
+        <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+            <label>Chain Status</label>
+            <div class="value">
+                <span class="status-pulse"></span>
+                Operational
+            </div>
+        </div>
+        <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+            <label>Network Integrity</label>
+            <div class="value">100% <span style="font-size: 1rem; color: var(--success);">Stable</span></div>
+        </div>
+        <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
+            <label>Block Height</label>
+            <div class="value">#{{ 3400 + logs|length }}</div>
+        </div>
+    </div>
+
+    <div class="glass-table-card animate__animated animate__fadeInUp">
+        <table class="ledger-table">
+            <thead>
+                <tr>
+                    <th>Transaction Hash</th>
+                    <th>Asset Identifier</th>
+                    <th>Node Registry</th>
+                    <th>Time Stamp</th>
+                    <th style="text-align: right;">Security Verdict</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in logs %}
+                <tr class="log-row">
+                    <td>
+                        <span class="tx-hash">0x{{ entry[0][:6] }}...{{ entry[0][-4:] if entry[0]|length > 6 else "SIGN" }}</span>
+                    </td>
+                    <td>
+                        <span style="font-weight: 800; color: var(--primary); font-size: 1.1rem; display: block;">Batch #{{ entry[0] }}</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">{{ entry[3] }} Reference</span>
+                    </td>
+                    <td>
+                        <div style="font-weight: 700; color: var(--primary);">{{ entry[2] }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Encrypted Entry</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 600; color: var(--text-main);">{{ entry[1] }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Verified</div>
+                    </td>
+                    <td style="text-align: right;">
+                        {% if entry[3] == 'Fake' %}
+                        <span class="verdict-badge badge-compromised">Flagged Anomaly</span>
+                        {% else %}
+                        <span class="verdict-badge badge-sealed">Immutable Seal</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

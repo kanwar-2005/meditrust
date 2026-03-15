@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTrust | AI & Blockchain Verification</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #c5a36d;
+      --accent-light: #f5efe6;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --glass: rgba(255, 255, 255, 0.85);
+      --gradient: linear-gradient(135deg, #fdfbf7 0%, #e2e8f0 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--gradient);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(1deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    header {
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      background: rgba(253, 251, 247, 0.9);
+      border-bottom: 1px solid rgba(30, 41, 59, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    header h1 strong {
+      color: var(--accent);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .hero-container {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      display: flex;
+      align-items: center;
+      padding: 0 8%;
+      overflow: hidden;
+    }
+
+    .hero-bg-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 65%;
+      height: 100%;
+      object-fit: cover;
+      mask-image: linear-gradient(to left, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, black 70%, transparent 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+      padding: 50px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      border: 1px solid white;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .badge {
+      background: var(--accent-light);
+      color: #8a6d3b;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .hero-content h2 {
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 20px;
+      color: var(--primary);
+    }
+
+    .hero-content p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 35px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 16px 35px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      background: #000;
+      box-shadow: 0 15px 30px rgba(15, 23, 42, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--accent-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-light);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 80px 8%;
+      background: white;
+    }
+
+    .feature-card {
+      padding: 40px;
+      border-radius: 20px;
+      background: #fdfbf7;
+      border: 1px solid #f1e4d1;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent);
+      box-shadow: 0 15px 35px rgba(197, 163, 109, 0.1);
+    }
+
+    .feature-card h3 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    footer {
+      padding: 40px 8%;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-bg-image { width: 100%; opacity: 0.3; mask-image: none; }
+      .hero-container { justify-content: center; height: auto; padding: 100px 5%; }
+      .hero-content { max-width: 100%; text-align: center; }
+      .cta-buttons { justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Medi<strong>Trust</strong></h1>
+  <nav>
+    <a href="/seller/login">Sellers</a>
+    <a href="/admin/login">Admin</a>
+    <a href="/customer/login">Sign In</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero-container">
+    <img src="https://images.pexels.com/photos/3985163/pexels-photo-3985163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Pharmaceutical Research" class="hero-bg-image">
+    
+    <div class="hero-content">
+      <span class="badge">Advanced Pharmaceutical Security</span>
+      <h2>Truth in every <br><span style="color:var(--accent)">Capsule.</span></h2>
+
+      <p>
+        MediTrust utilizes proprietary AI scanning technology and decentralized 
+        blockchain ledgers to verify the chemical integrity and supply chain 
+        history of your medication in real-time.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="/customer/register" class="btn btn-primary">Verify Now</a>
+        <a href="/seller/register" class="btn btn-secondary">Merchant Portal</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <h3>Molecular Validation</h3>
+      <p>Our AI analyzes packaging and pill morphology to detect counterfiet indicators invisible to standard inspection.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Chain of Custody</h3>
+      <p>Trace your medicine's journey from the manufacturing plant to the pharmacy shelf via immutable Web3 records.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Patient Safety First</h3>
+      <p>Designed for immediate consumer use. Simply snap a photo to receive a comprehensive authenticity certificate.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>&copy; 2026 MediTrust Protocol. Secure Verification Systems.</span>
+  <div style="display:flex; gap: 20px;">
+    <span>Network: Mainnet</span>
+    <span>Privacy Policy</span>
+  </div>
+</footer>
+
+</body>
+</html>

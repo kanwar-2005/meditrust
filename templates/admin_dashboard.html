@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Admin | MediTrust Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #c5a36d;
+      --accent-soft: rgba(197, 163, 109, 0.15);
+      --bg-light: #fdfbf7;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 280px;
+      background: white;
+      border-right: 1px solid rgba(15, 23, 42, 0.08);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    aside h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 50px;
+      letter-spacing: -1px;
+    }
+
+    aside h1 strong { color: var(--accent); }
+
+    .nav-item {
+      padding: 14px 18px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 50px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    /* Hero Section */
+    .admin-hero {
+      position: relative;
+      background: var(--primary);
+      border-radius: 30px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+      overflow: hidden;
+      margin-bottom: -60px; /* Pulls KPI cards up */
+    }
+
+    .admin-hero img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 55%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      mask-image: linear-gradient(to left, black 60%, transparent 100%);
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+    }
+
+    .hero-text h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: white;
+      margin: 0 0 15px;
+    }
+
+    .hero-text p {
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    /* KPI Grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      position: relative;
+      z-index: 10;
+      padding: 0 20px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 30px 25px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+      border: 1px solid rgba(197, 163, 109, 0.2);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+    }
+
+    .stat-card .label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+
+    .stat-card .trend {
+      margin-top: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .trend.up { color: #16a34a; }
+    .trend.neutral { color: var(--accent); }
+
+    /* Data Table Section */
+    .data-section {
+      margin-top: 50px;
+    }
+
+    .data-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 25px 30px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header h3 { font-size: 1.25rem; font-weight: 800; margin: 0; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 18px 30px; background: #f8fafc; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; text-align: left; }
+    td { padding: 22px 30px; border-top: 1px solid #f1f5f9; font-size: 0.95rem; }
+
+    .status-pill {
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .pill-pending { background: #fff1f2; color: #e11d48; }
+
+    .btn-action {
+      text-decoration: none;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .btn-action:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <h1>Medi<strong>Trust</strong></h1>
+    <a href="/admin/dashboard" class="nav-item active">Overview</a>
+    <a href="/admin/manage/sellers" class="nav-item">Merchant Registry</a>
+    <a href="/admin/manage/products" class="nav-item">Global Product Ledger</a>
+    <a href="/admin/blockchain" class="nav-item">Node Audit</a>
+    <div style="margin-top: auto;">
+      <a href="/logout" class="nav-item" style="background: #fff1f2; color: #e11d48;">Sign Out System</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="admin-hero">
+      <div class="hero-text">
+        <h2>Protocol Control</h2>
+        <p>Welcome to the central administrative terminal. Monitor global pharmaceutical integrity and authorize supply chain partners within the MediTrust ecosystem.</p>
+      </div>
+      <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Administrative Background">
+    </section>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="label">Total Partners</span>
+        <span class="value">{{ sellers|length }}</span>
+        <div class="trend up">▲ 12% Growth</div>
+      </div>
+      <div class="stat-card">
+        <span class="label">Pending Audits</span>
+        <span class="value">03</span>
+        <div class="trend neutral">Requires Review</div>
+      </div>
+      <div class="stat-card">
+        <span class="label">Global Items</span>
+        <span class="value">{{ products|length }}</span>
+        <div class="trend up">▲ Active Ledger</div>
+      </div>
+      <div class="stat-card">
+        <span class="label">System Health</span>
+        <span class="value">100%</span>
+        <div class="trend up">▲ Secured</div>
+      </div>
+    </div>
+
+    <div class="data-section">
+      <div class="data-card animate__animated animate__fadeInUp">
+        <div class="card-header">
+          <h3>Awaiting Merchant Certification</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Corporate Entity</th>
+              <th>Point of Contact</th>
+              <th>Audit Status</th>
+              <th>Certification Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in sellers %}
+            {% if not s[3] %} 
+            <tr>
+              <td><strong>{{ s[2] }}</strong></td>
+              <td>{{ s[1] }}</td>
+              <td><span class="status-pill pill-pending">Review Required</span></td>
+              <td>
+                <a href="/admin/verify_details/{{ s[0] }}" class="btn-action">Audit Documents</a>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

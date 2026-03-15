@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Logs | MediGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-navy: #050b18;
+      --bg-light: #fcfcfd;
+      --sandal-600: #a67c52;
+      --sandal-500: #c29d7c;
+      --sandal-100: #f7f1eb;
+      --success-green: #10b981;
+      --error-red: #ef4444;
+      --slate-600: #475569;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-navy);
+    }
+
+    /* Left Side: Information Hub */
+    .info-panel {
+      width: 45%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      position: relative;
+    }
+
+    .info-panel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at top left, rgba(166, 124, 82, 0.15) 0%, transparent 60%);
+      z-index: 0;
+    }
+
+    .info-content { position: relative; z-index: 1; }
+
+    .brand-tag {
+      color: var(--sandal-500);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    h1 { font-size: 2.8rem; font-weight: 800; margin: 0 0 24px; line-height: 1.1; }
+    
+    .desc-para {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+
+    .visual-frame {
+      width: 100%;
+      height: 280px;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+
+    .visual-frame img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: contrast(1.1) brightness(0.9);
+    }
+
+    /* Right Side: Scrollable Ledger */
+    .ledger-panel {
+      width: 55%;
+      background-color: var(--bg-light);
+      border-top-left-radius: 40px;
+      border-bottom-left-radius: 40px;
+      padding: 60px;
+      overflow-y: auto;
+    }
+
+    .ledger-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .btn-back {
+      text-decoration: none;
+      color: var(--slate-600);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .btn-back:hover { color: var(--sandal-600); }
+
+    /* Table Styling */
+    .table-container {
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    
+    th {
+      background: #f8fafc;
+      text-align: left;
+      padding: 18px 24px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--slate-600);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 20px 24px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--slate-900);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .pill-genuine { background: #dcfce7; color: #15803d; }
+    .pill-fake { background: #fee2e2; color: #b91c1c; }
+
+    .batch-id {
+      font-family: 'Fira Code', monospace;
+      font-weight: 500;
+      color: var(--sandal-600);
+    }
+
+    .timestamp { color: var(--slate-600); font-size: 0.8rem; }
+
+    /* Custom Scrollbar */
+    .ledger-panel::-webkit-scrollbar { width: 6px; }
+    .ledger-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+    @media (max-width: 1100px) {
+      body { flex-direction: column; height: auto; overflow: visible; }
+      .info-panel, .ledger-panel { width: 100%; height: auto; border-radius: 0; padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="info-panel">
+    <div class="info-content">
+      <span class="brand-tag">Security Protocol 2.0</span>
+      <h1>Audit Your <br>Digital Ledger</h1>
+      <p class="desc-para">
+        Every interaction with the MediGuard network is immutable. Below is your synchronized history of pharmaceutical scans, cross-referenced with the 2026 Global Blockchain Registry.
+      </p>
+      
+      <div class="visual-frame">
+        <img src="https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?auto=format&fit=crop&q=80&w=800" alt="Laboratory Analysis">
+      </div>
+    </div>
+  </section>
+
+  <main class="ledger-panel">
+    <div class="ledger-header">
+      <h2 style="margin: 0; font-size: 1.4rem;">Activity Archives</h2>
+      <a href="/customer/home" class="btn-back">← Dashboard</a>
+    </div>
+
+    <div class="table-container">
+      {% if logs %}
+      <table>
+        <thead>
+          <tr>
+            <th>Batch Details</th>
+            <th>Verdict</th>
+            <th>Network</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td>
+              <span class="batch-id">{{ log[0] }}</span>
+            </td>
+            <td>
+              <span class="status-pill {% if log[1] == 'Genuine' %}pill-genuine{% else %}pill-fake{% endif %}">
+                {{ log[1] }}
+              </span>
+            </td>
+            <td>
+              <span style="font-size: 0.75rem; font-weight: 600; color: {% if log[2] == 1 %}#3b82f6{% else %}#94a3b8{% endif %};">
+                {{ 'VERIFIED' if log[2] == 1 else 'OFFLINE' }}
+              </span>
+            </td>
+            <td>
+              <span class="timestamp">{{ log[3] }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding: 100px 40px; text-align: center;">
+        <p style="color: var(--slate-600);">No cryptographic logs found in this node.</p>
+        <a href="/customer/verify" style="color: var(--sandal-600); font-weight: 700; text-decoration: none;">Initialize First Scan →</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <footer style="margin-top: 40px; text-align: center; font-size: 0.75rem; color: var(--slate-600);">
+      Data synchronized with MediGuard Decentralized Network 2026.
+    </footer>
+  </main>
+
+</body>
+</html>

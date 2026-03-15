@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | MediGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: #fcfaf8;
+      --sandal-accent: #eaddd0;
+      --sandal-deep: #b09580;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Left Side: Visuals */
+    .left-visual {
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px;
+      overflow: hidden;
+    }
+
+    .left-visual img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      animation: imageZoom 20s infinite alternate;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(30, 41, 59, 0.8) 0%, transparent 60%);
+      z-index: 0;
+    }
+
+    .passage-box {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      max-width: 500px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .passage-box h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    /* Right Side: Form */
+    .right-portal {
+      flex: 1;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      background: var(--bg-light);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .back-btn:hover {
+      background: var(--sandal-accent);
+      color: var(--text-main);
+      transform: translateX(-5px);
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 400px;
+      animation: formEntry 0.8s ease-out;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--sandal-accent);
+      color: var(--sandal-deep);
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .form-card h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .input-group { margin-bottom: 18px; }
+
+    input {
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 16px;
+      border: 1.5px solid #f1f5f9;
+      background: #f8fafc;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--sandal-deep);
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(176, 149, 128, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      background: var(--text-main);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(30, 41, 59, 0.2);
+    }
+
+    button:hover {
+      background: var(--sandal-deep);
+      transform: translateY(-2px);
+    }
+
+    .login-link {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .login-link a {
+      color: var(--sandal-deep);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    @keyframes imageZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes formEntry { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    @media (max-width: 1000px) {
+      .left-visual { display: none; }
+      .right-portal { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <section class="left-visual">
+      <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200" alt="Medicine Verification">
+      <div class="overlay"></div>
+      <div class="passage-box">
+        <h2>Verify with Confidence.</h2>
+        <p>
+          Join thousands of users who trust MediGuard AI to validate their pharmaceuticals. Our blockchain-backed ledger ensures your medicine is genuine, safe, and effective.
+        </p>
+      </div>
+    </section>
+
+    <section class="right-portal">
+      <a href="/" class="back-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Home
+      </a>
+
+      <div class="form-card">
+        <span class="brand-pill">Secure Registration</span>
+        <h1>Create Account</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Start your journey to safer health today.</p>
+
+        <form action="/customer/register" method="POST">
+          <div class="input-group">
+            <input type="text" name="username" placeholder="Full Name" required>
+          </div>
+          <div class="input-group">
+            <input type="email" name="email" placeholder="Email Address" required>
+          </div>
+          <div class="input-group">
+            <input type="password" name="password" placeholder="Create Password" required>
+          </div>
+          <button type="submit">Start Verifying</button>
+        </form>
+
+        <p class="login-link">
+          Already a member? <a href="/customer/login">Login Here</a>
+        </p>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Result | MediGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-navy: #050b18;
+      --bg-main: #f0f7ff; 
+      --bg-card: #ffffff;
+      --sandal-600: #a67c52;
+      --sandal-500: #c29d7c;
+      --sandal-100: #fcf9f6;
+      --blue-accent: #3b82f6; 
+      --slate-900: #0f172a;
+      --slate-600: #475569;
+      --slate-200: #e2e8f0;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow-lg: 0 20px 25px -5px rgba(59, 130, 246, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-navy);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Side: Brand Anchor */
+    .brand-panel {
+      width: 45%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      position: relative;
+      background: radial-gradient(circle at top left, rgba(166, 124, 82, 0.15) 0%, transparent 70%);
+    }
+
+    .brand-content { position: relative; z-index: 2; }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      background: {% if is_valid %}rgba(16, 185, 129, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %};
+      color: {% if is_valid %}var(--success){% else %}var(--error){% endif %};
+      border: 1px solid {% if is_valid %}var(--success){% else %}var(--error){% endif %};
+    }
+
+    .brand-panel h1 { font-size: 3rem; font-weight: 800; margin: 0 0 20px; line-height: 1.1; }
+    .brand-panel p { color: #94a3b8; font-size: 1.1rem; line-height: 1.6; max-width: 440px; }
+
+    .feature-image {
+      margin-top: 40px;
+      width: 100%;
+      height: 250px;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+
+    .feature-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Right Side: Result Ledger */
+    .result-panel {
+      width: 55%;
+      background-color: var(--bg-main);
+      border-top-left-radius: 60px;
+      border-bottom-left-radius: 60px;
+      padding: 60px;
+      overflow-y: auto;
+      box-shadow: -20px 0 50px rgba(0,0,0,0.2);
+    }
+
+    .result-card {
+      background: var(--bg-card);
+      border-radius: 40px;
+      padding: 40px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-lg);
+      animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .image-card {
+      background: var(--sandal-100);
+      border-radius: 24px;
+      padding: 16px;
+      border: 1px solid var(--slate-200);
+      text-align: center;
+    }
+
+    .image-card span {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--sandal-600);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .image-card img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 16px;
+      background: white;
+    }
+
+    .data-grid {
+      background: #f8fafc;
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid var(--slate-200);
+    }
+
+    .data-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .data-item:last-child { border: none; }
+    .label { color: var(--slate-600); font-size: 0.85rem; font-weight: 500; }
+    .value { font-weight: 700; font-size: 0.95rem; }
+
+    .ai-directive {
+      margin-top: 32px;
+      padding: 24px;
+      background: var(--slate-900);
+      border-radius: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .ai-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sandal-500);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .ai-directive p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .btn {
+      padding: 18px;
+      border-radius: 16px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--sandal-600);
+      color: white;
+      box-shadow: 0 10px 20px rgba(166, 124, 82, 0.2);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--slate-900);
+      border: 1px solid var(--slate-200);
+    }
+
+    .btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 1100px) {
+      body { flex-direction: column; height: auto; overflow: visible; }
+      .brand-panel, .result-panel { width: 100%; border-radius: 0; }
+      .result-panel { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="brand-panel">
+    <div class="brand-content">
+      <div class="status-badge">
+        {% if is_valid %}System Authenticated{% else %}Security Breach Detected{% endif %}
+      </div>
+      <h1>Verification <br><span style="color: var(--sandal-500)">Intelligence</span></h1>
+      <p>
+        The MediGuard neural engine has completed its analysis. Below are the cryptographic results comparing your physical unit against the global master registry.
+      </p>
+      
+      <div class="feature-image">
+        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800" alt="Laboratory Verification">
+      </div>
+    </div>
+  </aside>
+
+  <main class="result-panel">
+    <div class="result-card">
+      <div class="comparison-row">
+        <form method="POST" enctype="multipart/form-data" action="/customer/verify" id="scanForm">
+
+        <div class="image-card">
+          <span>Neural Scan Result</span>
+          <input type="file" name="qr_image" id="qrInput" accept="image/*" required>
+
+        </div>
+        <button type="submit" id="verifyBtn">Initialize Verification</button>
+      </form>
+      </div>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="label">Legal Manufacturer</span>
+          <span class="value">{{ drug_data[1] if drug_data else 'Unidentified' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="label">Batch Signature</span>
+          <span class="value" style="font-family: 'Fira Code', monospace; color: var(--blue-accent);">
+            {{ drug_data[3] if drug_data else '0x000000' }}
+          </span>
+        </div>
+        <div class="data-item">
+          <span class="label">Node Timestamp</span>
+          <span class="value">Feb 07, 2026 • 15:54 UTC</span>
+        </div>
+      </div>
+
+      <div class="ai-directive">
+        <div class="ai-icon">AI</div>
+        <p>
+          {% if is_valid %}
+            <strong>System Report:</strong> Cryptographic integrity verified. Packaging markers and QR geometry are consistent with authorized distribution.
+          {% else %}
+            <strong>Security Alert:</strong> Digital signature mismatch detected. This unit may be part of an unauthorized batch. <strong>Do not consume.</strong>
+          {% endif %}
+        </p>
+      </div>
+
+      
+
+      <div class="actions">
+        <a href="/customer/verify" class="btn btn-secondary">New Scan</a>
+        <a href="/customer/home" class="btn btn-primary">Dashboard</a>
+      </div>
+    </div>
+
+    <footer style="margin-top: 40px; text-align: center; color: var(--slate-600); font-size: 0.75rem;">
+      &copy; 2026 MediGuard AI Architecture • Secure Node #{{ drug_data[3][:4] if drug_data else '4421' }}
+    </footer>
+  </main>
+
+</body>
+</html>

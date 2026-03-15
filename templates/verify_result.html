@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Result | MediGuard AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Theme Palette: Light Blue & Sandal */
+      --bg-main: #f0f7ff; /* Soft Medical Blue */
+      --bg-card: #ffffff;
+      --sandal-600: #a67c52;
+      --sandal-500: #c29d7c;
+      --sandal-100: #fcf9f6;
+      --blue-accent: #3b82f6; /* Trust Blue */
+      --slate-900: #0f172a;
+      --slate-600: #475569;
+      --slate-200: #e2e8f0;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow-lg: 0 20px 25px -5px rgba(59, 130, 246, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      /* Subtle gradient for texture */
+      background-image: radial-gradient(at top left, #e0f0ff 0%, #f0f7ff 100%);
+      color: var(--slate-900);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .result-container {
+      max-width: 700px;
+      width: 100%;
+      background: var(--bg-card);
+      border-radius: 32px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Status Banner */
+    .status-banner {
+      padding: 50px 40px;
+      text-align: center;
+      background: {% if is_valid %}#f0fdf4{% else %}#fff1f2{% endif %};
+      border-bottom: 1px solid var(--slate-200);
+      position: relative;
+    }
+
+    /* Decorative Blue Ring */
+    .status-banner::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue-accent), var(--sandal-500));
+    }
+
+    .status-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 2rem;
+      background: #fff;
+      transform: rotate(-10deg);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      border: 1px solid var(--slate-200);
+    }
+
+    .content-padding { padding: 45px; }
+
+    /* Comparison Section */
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 35px;
+    }
+
+    .image-card {
+      background: var(--sandal-100);
+      border-radius: 24px;
+      padding: 16px;
+      border: 1px solid var(--slate-200);
+      transition: transform 0.3s ease;
+    }
+
+    .image-card:hover { transform: translateY(-5px); }
+
+    .image-card span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--sandal-600);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .image-card img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 16px;
+      background: white;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    /* Insights Grid */
+    .data-grid {
+      background: #f8fafc;
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid var(--slate-200);
+      margin-bottom: 24px;
+    }
+
+    .data-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .data-item:last-child { border: none; }
+    .label { color: var(--slate-600); font-size: 0.85rem; font-weight: 500; }
+    .value { font-weight: 700; font-size: 0.95rem; font-family: 'Inter', sans-serif; }
+
+    /* AI Analysis Box */
+    .ai-note {
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--slate-200);
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      margin-top: 30px;
+    }
+
+    .ai-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--sandal-500);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .ai-note p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--slate-600);
+    }
+
+    /* Buttons */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 45px;
+    }
+
+    .btn {
+      padding: 18px;
+      border-radius: 16px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-primary {
+      background: var(--sandal-600);
+      color: white;
+      box-shadow: 0 4px 14px rgba(166, 124, 82, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--sandal-500);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(166, 124, 82, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--blue-accent);
+      border: 1px solid var(--slate-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-main);
+      color: var(--slate-900);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .comparison-row { grid-template-columns: 1fr; }
+      .actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="result-container">
+    <div class="status-banner">
+      <div class="status-icon" style="border-color: {% if is_valid %}var(--success){% else %}var(--error){% endif %};">
+        {% if is_valid %}
+          <span style="color: var(--success);">✓</span>
+        {% else %}
+          <span style="color: var(--error);">!</span>
+        {% endif %}
+      </div>
+      <h1 style="margin: 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px;">
+        {% if is_valid %}
+          Scan <span style="color: var(--success);">Authenticated</span>
+        {% else %}
+          Security <span style="color: var(--error);">Warning</span>
+        {% endif %}
+      </h1>
+      <p style="color: var(--slate-600); margin: 12px 0 0; font-size: 1rem;">
+        {% if is_valid %}
+          The product hash matches the manufacturer's secure ledger.
+        {% else %}
+          The digital fingerprint for this batch is invalid or unrecognized.
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="content-padding">
+      <div class="comparison-row">
+        <div class="image-card">
+          <span>Global Reference</span>
+          {% if tablet_img %}
+            <img src="data:image/jpeg;base64,{{ tablet_img }}" alt="Authentic Specimen">
+          {% else %}
+            <div style="height: 150px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--sandal-600); background: #fff; border-radius: 12px;">IMAGE_NOT_SYNCED</div>
+          {% endif %}
+        </div>
+        <div class="image-card">
+          <span>Your Unit QR</span>
+          {% if qr_img %}
+            <img src="data:image/png;base64,{{ qr_img }}" alt="Scanned QR" style="object-fit: contain; padding: 15px; background: white;">
+          {% else %}
+            <div style="height: 150px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--sandal-600); background: #fff; border-radius: 12px;">QR_NOT_CAPTURED</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="label">Producer</span>
+          <span class="value">{{ drug_data[1] if drug_data else 'System Unidentified' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="label">Batch Signature</span>
+          <span class="value" style="color: {% if is_valid %}var(--blue-accent){% else %}var(--error){% endif %};">
+            {{ drug_data[3] if drug_data else 'NO_DATA' }}
+          </span>
+        </div>
+        <div class="data-item">
+          <span class="label">Blockchain Timestamp</span>
+          <span class="value">Feb 07, 2026 • 15:22 UTC</span>
+        </div>
+      </div>
+
+      <div class="ai-note">
+        <div class="ai-avatar">AI</div>
+        <p>
+          {% if is_valid %}
+            <strong>Verdict:</strong> The chemical markers and structural geometry of the pill packaging match authorized distribution records. Integrity is confirmed.
+          {% else %}
+            <strong>Alert:</strong> Our neural engine detected a mismatch in the cryptographic seal. This item may be counterfeit. <strong>Do not use.</strong>
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="actions">
+        <a href="/customer/verify" class="btn btn-secondary">Restart Scanner</a>
+        <a href="/customer/home" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

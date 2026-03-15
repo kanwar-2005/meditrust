@@ -1,0 +1,10 @@
+flask
+tensorflow-cpu
+opencv-python-headless
+numpy
+pillow
+pyzbar
+qrcode
+gunicorn
+werkzeug
+gdown

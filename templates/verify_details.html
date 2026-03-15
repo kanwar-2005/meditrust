@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Admin | Document Audit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #c5a36d;
+      --accent-soft: rgba(197, 163, 109, 0.15);
+      --bg-light: #fdfbf7;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Consistent Sidebar Fit */
+    aside {
+      width: 280px;
+      background: white;
+      border-right: 1px solid rgba(15, 23, 42, 0.08);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    aside h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 50px;
+      letter-spacing: -1px;
+    }
+
+    aside h1 strong { color: var(--accent); }
+
+    .nav-item {
+      padding: 14px 18px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* Main Content Fit */
+    main {
+      flex: 1;
+      padding: 40px 50px;
+      max-width: 1200px;
+    }
+
+    .back-nav {
+      margin-bottom: 25px;
+      display: block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .back-nav:hover { color: var(--accent); }
+
+    /* Hero Fit */
+    .audit-hero {
+      position: relative;
+      background: var(--primary);
+      border-radius: 24px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      padding: 0 50px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+    }
+
+    .audit-hero img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 45%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      mask-image: linear-gradient(to left, black 40%, transparent 100%);
+    }
+
+    .hero-text { position: relative; z-index: 2; max-width: 500px; }
+    .hero-text h2 { font-size: 1.8rem; font-weight: 800; color: white; margin: 0 0 8px; }
+    .hero-text p { color: var(--accent); font-size: 0.9rem; line-height: 1.5; margin: 0; font-weight: 500; }
+
+    /* Document Grid Layout */
+    .inspection-card {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    }
+
+    .doc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .doc-item label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .img-frame {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #f1f5f9;
+      background: #f8fafc;
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .img-frame:hover {
+      transform: scale(1.02);
+      border-color: var(--accent);
+    }
+
+    .img-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Clean Action Bar */
+    .action-bar {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 14px 30px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      border: 2px solid #e11d48;
+      color: #e11d48;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: #e11d48;
+      color: white;
+    }
+
+    .btn-solid {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .btn-solid:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    @media (max-width: 1100px) {
+      .doc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <h1>Medi<strong>Trust</strong></h1>
+    <a href="/admin/dashboard" class="nav-item">Overview</a>
+    <div style="margin-top: auto;">
+      <a href="/logout" class="nav-item" style="color: #e11d48;">Sign Out</a>
+    </div>
+  </aside>
+
+  <main>
+    <a href="/admin/dashboard" class="back-nav">← Back to Overview</a>
+
+    <section class="audit-hero">
+      <div class="hero-text">
+        <h2>Identity Verification</h2>
+        <p>Reviewing legal documentation for: <span style="color: white; font-weight: 700;">{{ seller_name }}</span></p>
+      </div>
+      <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Identity Verification">
+    </section>
+
+    <div class="inspection-card">
+      <div class="doc-grid">
+        <div class="doc-item">
+          <label>Government Identification (Aadhaar)</label>
+          <div class="img-frame">
+            <img src="{{ url_for('static', filename='uploads/tablets/' + aadhar_filename) }}" alt="Aadhaar Document">
+          </div>
+        </div>
+        
+        <div class="doc-item">
+          <label>Tax Identification (PAN)</label>
+          <div class="img-frame">
+            <img src="{{ url_for('static', filename='uploads/tablets/' + pan_filename) }}" alt="PAN Document">
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <a href="/admin/block/seller/{{ seller_id }}" class="btn btn-outline">Flag & Block Account</a>
+        <a href="/admin/verify/{{ seller_id }}" class="btn btn-solid">Approve Certification</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
