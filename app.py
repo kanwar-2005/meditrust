@@ -23,7 +23,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['QR_FOLDER'], exist_ok=True)
 import gdown
 
-MODEL_URL = "https://drive.google.com/uc?id=1AbCxyz1234567"
+MODEL_URL = "https://drive.google.com/uc?id=1BczZgyjRpxpaRsN-eeuDuzev9sQEyeeS"
 MODEL_PATH = "counterfeit_model.h5"
 
 if not os.path.exists(MODEL_PATH):
