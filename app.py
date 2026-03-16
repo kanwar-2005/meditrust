@@ -21,16 +21,15 @@ app.config['QR_FOLDER'] = QR_FOLDER
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['QR_FOLDER'], exist_ok=True)
+import gdown
+
+MODEL_URL = "https://drive.google.com/uc?id=YOUR_FILE_ID"
+MODEL_PATH = "counterfeit_model.h5"
 
 
-MODEL_PATH = os.path.join("model", "counterfeit_model.h5")
-
-try:
-    model = tf.keras.models.load_model(MODEL_PATH)
-    print("AI model loaded successfully")
-except Exception as e:
-    print("Error loading model:", e)
-    model = None
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
 
 def verify_image(image_path):
     if model is None:
